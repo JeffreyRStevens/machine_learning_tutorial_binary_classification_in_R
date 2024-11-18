@@ -25,7 +25,7 @@ assumptiontable <- data.frame(
   High_Dimensionality = c("No", "Yes", "No", "No", "No"),
   Feature_Scaling = c("Yes","Yes","No","No","Yes"))
 
-kable(assumptiontable)
+kable(assumptiontable, col.names = sub("_", " ", names(assumptiontable)))
 ```
 
 The above table lists the model assumptions that need to be understood and investigated further. Make sure you investigate these assumptions per *research question*, as different questions will use different data. If an assumption is violated, you can either transform your data to meet the assumption or eliminate that test from your analyses. Below I will show you how to run checks for independence, normality, strong outliers, linearity, [high dimensionality](#np), and how to [feature scale](#featurescaling) your data.
@@ -65,31 +65,34 @@ aggression_qqplot <- qqnorm(manydogs_missing_handled$aggression_score)
 qqline(manydogs_missing_handled$aggression_score)
 aggression_density <- plot(density(manydogs_missing_handled$aggression_score), main = "Density Plot of Aggression")
 
+
+```
+
+```{r eval=FALSE}
 #Plots for Attachment
-#attachment_qqplot <- qqnorm(manydogs_missing_handled$attachment_score)
-#qqline(manydogs_missing_handled$attachment_score)
-#attachment_density <- plot(density(manydogs_missing_handled$attachment_score), main = "Density Plot of Attachment")
+attachment_qqplot <- qqnorm(manydogs_missing_handled$attachment_score)
+qqline(manydogs_missing_handled$attachment_score)
+attachment_density <- plot(density(manydogs_missing_handled$attachment_score), main = "Density Plot of Attachment")
 
 #Plots for Excitability
-#excitability_qqplot <- qqnorm(manydogs_missing_handled$excitability_score)
-#qqline(manydogs_missing_handled$excitability_score)
-#excitability_density <- plot(density(manydogs_missing_handled$excitability_score), main = "Density Plot of Excitability")
+excitability_qqplot <- qqnorm(manydogs_missing_handled$excitability_score)
+qqline(manydogs_missing_handled$excitability_score)
+excitability_density <- plot(density(manydogs_missing_handled$excitability_score), main = "Density Plot of Excitability")
 
 #Plots for Fear
-#fear_qqplot <- qqnorm(manydogs_missing_handled$fear_score)
-#qqline(manydogs_missing_handled$fear_score)
-#fear_density <- plot(density(manydogs_missing_handled$fear_score), main = "Density Plot of Fear")
+fear_qqplot <- qqnorm(manydogs_missing_handled$fear_score)
+qqline(manydogs_missing_handled$fear_score)
+fear_density <- plot(density(manydogs_missing_handled$fear_score), main = "Density Plot of Fear")
 
 #Plots for Miscellaneous
-#miscellaneous_qqplot <- qqnorm(manydogs_missing_handled$miscellaneous_score)
-#qqline(manydogs_missing_handled$miscellaneous_score)
-#miscellaneous_density <- plot(density(manydogs_missing_handled$miscellaneous_score), main = "Density Plot of Miscellaneous")
+miscellaneous_qqplot <- qqnorm(manydogs_missing_handled$miscellaneous_score)
+qqline(manydogs_missing_handled$miscellaneous_score)
+miscellaneous_density <- plot(density(manydogs_missing_handled$miscellaneous_score), main = "Density Plot of Miscellaneous")
 
 #Plots for Separation
-#separation_qqplot <- qqnorm(manydogs_missing_handled$separation_score)
-#qqline(manydogs_missing_handled$separation_score)
-#separation_density <- plot(density(manydogs_missing_handled$separation_score), main = "Density Plot of Separation")
-
+separation_qqplot <- qqnorm(manydogs_missing_handled$separation_score)
+qqline(manydogs_missing_handled$separation_score)
+separation_density <- plot(density(manydogs_missing_handled$separation_score), main = "Density Plot of Separation")
 ```
 
 Unfortunately, none of the plots for our research question 3 fit the normality assumption. We know this because the density plots do not show a smooth bell curve - there are multiple peaks, instead of just 1 in the center - and graphs aren't symmetrical. For the Q-Q plots, the data has large deviations from the normality line with much more data than 25% not touching the line. There are also deviations on the tail ends, with both tails going off in different directions. Therefore, we do not have normality and cannot run a Naive Bayes model with this data.
@@ -122,7 +125,7 @@ One last note on outliers: The Z-score method is also used to detect outliers. H
 
 ### Linearity
 
-Linearity is our next assumption. [Linearity](https://www.bookdown.org/rwnahhas/RMPH/mlr-linearity.html) assumes that *each* predictor in the model, when holding all the other predictors in the model constant, will change in a linear way with the outcome variable. (In other words, don't put a line through something that is not a line). Unlike in linear regression, in logistic regression, we are looking at the log odds of the **probability** of the outcome (i.e., being in a particular category). To diagnose if this is true or not, we need to make a graph of this relationship and see if the plot satisfies the assumption. These plots are called a component plus resistance or CR plot, which can be made with the `crPlots` function in the `car` package.
+Linearity is our next assumption. [Linearity](https://www.bookdown.org/rwnahhas/RMPH/mlr-linearity.html) assumes that *each* predictor in the model, when holding all the other predictors in the model constant, will change in a linear way with the outcome variable. (In other words, don't put a line through something that is not a line). Unlike in linear regression, in logistic regression, we are looking at the log odds of the **probability** of the outcome (i.e., being in a particular category). To diagnose if this is true or not, we need to make a graph of this relationship and see if the plot satisfies the assumption. These plots are called a component plus resistance or CR plot, which can be made with the `crPlots()` function in the `car` package.
 
 We will make a plot for each continuous predictor per research question. We will break code into three sections, one for each research question. You do not need to check the categorical predictors as they are always linear. To read more about why this is see [here](https://www.bookdown.org/rwnahhas/RMPH/mlr-linearity.html).
 
@@ -162,33 +165,37 @@ age_crplot <- crPlots(model_RQ_3, terms = ~age,
              pch=20, col="gray",
              smooth = list(smoother=car::gamLine))
 
-#training_crplot <- crPlots(model_RQ_3, terms = ~training_score,
-            #pch=20, col="gray",
-            #smooth = list(smoother=car::gamLine))
+```
 
-#aggression_crplot <- crPlots(model_RQ_3, terms = ~aggression_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+```{r eval=FALSE}
 
-#fear_crplot <- crPlots(model_RQ_3, terms = ~fear_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+training_crplot <- crPlots(model_RQ_3, terms = ~training_score,
+                           pch=20, col="gray",
+                           smooth = list(smoother=car::gamLine))
 
-#separation_crplot <- crPlots(model_RQ_3, terms = ~separation_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+aggression_crplot <- crPlots(model_RQ_3, terms = ~aggression_score,
+                             pch=20, col="gray",
+                             smooth = list(smoother=car::gamLine))
 
-#excitability_crplot <- crPlots(model_RQ_3, terms = ~excitability_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+fear_crplot <- crPlots(model_RQ_3, terms = ~fear_score,
+                       pch=20, col="gray",
+                       smooth = list(smoother=car::gamLine))
 
-#attachment_crplot <- crPlots(model_RQ_3, terms = ~attachment_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+separation_crplot <- crPlots(model_RQ_3, terms = ~separation_score,
+                             pch=20, col="gray",
+                             smooth = list(smoother=car::gamLine))
 
-#miscellaneous_crplot <- crPlots(model_RQ_3, terms = ~miscellaneous_score,
-             #pch=20, col="gray",
-             #smooth = list(smoother=car::gamLine))
+excitability_crplot <- crPlots(model_RQ_3, terms = ~excitability_score,
+                               pch=20, col="gray",
+                               smooth = list(smoother=car::gamLine))
+
+attachment_crplot <- crPlots(model_RQ_3, terms = ~attachment_score,
+                             pch=20, col="gray",
+                             smooth = list(smoother=car::gamLine))
+
+miscellaneous_crplot <- crPlots(model_RQ_3, terms = ~miscellaneous_score,
+                                pch=20, col="gray",
+                                smooth = list(smoother=car::gamLine))
 
 ```
 
@@ -202,7 +209,7 @@ Now that you know why we transform predictors by scaling them, let's scale our c
 
 To see explanations of other types of transformations see this great [guide](https://rpubs.com/zubairishaq9/how-to-normalize-data-r-my-data) on R pubs.
 
-We will use the function `scale` to apply the z-score function to our continuous predictor columns. This function comes with base R, so no need to install another package.
+We will use the function `scale()` to apply the z-score function to our continuous predictor columns. This function comes with base R, so no need to install another package.
 
 ```{r}
 manydogs_transformed <- manydogs_missing_handled %>%

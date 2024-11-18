@@ -14,8 +14,8 @@ Now after all that explanation we finally get to the good part, running the actu
 
 In 2016 a package came out called `mlr` (machine learning in R) that created a suite of tools to create machine learning models quickly and efficiently in R. This package is the only R package we will need for this section of the tutorial. The `mlr` package breaks creating machine learning models into three smaller steps:
 
-1.  Define the [task]{#task}: This step consists of passing the data into an object and labeling what the outcome variable is.
-2.  Define the [learner]{#learner}/model: A learner defines the structure of the algorithm. In this step you define/list the model type you want to use (i.e., logistic regression, KNN, random forest, etc.) and then the specific [hyperparameters](glossary.qmd#hyperparameters) you want the model to use. (i.e., what k to use in a KNN model) Learner is not a general term used throughout machine learning but instead is specific to the `mlr` package. You can also think of this step as defining your model.
+1.  Define the [[task](#task)]{#task}: This step consists of passing the data into an object and labeling what the outcome variable is.
+2.  Define the [[learner](#learner)]{#learner}/model: A learner defines the structure of the algorithm. In this step you define/list the model type you want to use (i.e., logistic regression, KNN, random forest, etc.) and then the specific [hyperparameters](glossary.qmd#hyperparameters) you want the model to use. (i.e., what k to use in a KNN model) Learner is not a general term used throughout machine learning but instead is specific to the `mlr` package. You can also think of this step as defining your model.
 3.  [Train]{#train} the model with the appropriate cross validation approach: Put it all together along with the specified cross validation approach. At this step you create an object that takes the task, learner, and any other additional features and uses that information to output the trained model you can use to make predictions.
 
 ### Creating the Task
@@ -127,7 +127,7 @@ KNN_model_RQ_1_loocv <- suppressMessages({
 saveRDS(KNN_model_RQ_1, file = "KNN_model_RQ_1.rds")
 ```
 
-Now that we made the model and then cross validated it using Leave one out cross validation, we can look at the loss/cost function to see how our model is performing. In this case our loss/cost functions are accuracy (acc) and mean misclassification error (mmce). The `aggr()` function gives you the two performance metrics I asked the model to pull out in the `measures` argument. A performance metric tells you how well the model predicted the correct category. As noted above, the **mmce** is mean misclassifications error or the proportion of incorrectly classified cases, and **acc** is the accuracy or the proportion of correctly classified cases. You will notice that the two together add up to 100%, so you really only need one or the other.
+Now that we made the model and then cross validated it using Leave one out cross validation, we can look at the loss function to see how our model is performing. In this case our loss functions are accuracy (acc) and mean misclassification error (mmce). The `aggr()` function gives you the two performance metrics I asked the model to pull out in the `measures` argument. A performance metric tells you how well the model predicted the correct category. As noted above, the **mmce** is mean misclassifications error or the proportion of incorrectly classified cases, and **acc** is the accuracy or the proportion of correctly classified cases. You will notice that the two together add up to 100%, so you really only need one or the other.
 
 ```{r}
 #Performance
@@ -165,7 +165,7 @@ decision_tree_model_RQ_1_loocv <- suppressMessages({
 saveRDS(decision_tree_model_RQ_1, file = "decision_tree_model_RQ_1.rds")
 ```
 
-Now let's check how well the decision tree model is working with the data by looking at our loss/cost function.
+Now let's check how well the decision tree model is working with the data by looking at our loss function.
 
 ```{r}
 #Performance of the Decision Tree
@@ -250,7 +250,7 @@ SVM_model_RQ_1_loocv <- suppressMessages({
            measures = list(mmce, acc))
   })
 
-#Output the Lost/Cost functions for this model
+#Output the Loss functions for this model
 SVM_model_RQ_1_loocv$aggr
 ```
 
